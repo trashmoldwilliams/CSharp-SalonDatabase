@@ -24,7 +24,7 @@ namespace HairSalonNS
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueForSameName()
+    public void Test_Equal_ReturnsTrueForSame()
     {
       //Arrange, Act
       Stylist firstStylist = new Stylist("Larry");
