@@ -1,0 +1,20 @@
+<h1>Stylists</h1>
+@if (@Model.Count == 0)
+{
+  <p>There are no added stylists.</p>
+}
+<ul>
+  @foreach (var stylist in @Model)
+  {
+    <li><a href="/stylists/@stylist.GetId()">@stylist.GetName()</a></li>
+  }
+</ul>
+<br>
+<a href="/stylists/delete_all">Delete All</a>
+<hr />
+<h3>Add a new stylist</h3>
+<form action="/stylists/new" method="post">
+  <label for="stylist-name">Name</label>
+  <input id="stylist-name" name="stylist-name" type="text">
+  <button type="submit">Add</button>
+</form>
