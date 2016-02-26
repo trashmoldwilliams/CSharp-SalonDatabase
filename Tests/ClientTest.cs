@@ -81,6 +81,27 @@ namespace HairSalonNS
     }
 
     [Fact]
+    public void Test_Update_UpdatesClientInDatabase()
+    {
+      //Arrange
+      string name = "Larry";
+      int stylistId = 1;
+      Client testClient = new Client(name, stylistId);
+      testClient.Save();
+      string newName = "Barry";
+      int newStylistId = 2;
+
+      //Act
+      testClient.Update(newName);
+
+      Client result = new Client(testClient.GetName(), 1);
+      Client newClient = new Client(newName, 1);
+
+      //Assert
+      Assert.Equal(newClient, result);
+    }
+
+    [Fact]
     public void Test_Delete_DeletesClientFromDatabase()
     {
       //Arrange

@@ -119,10 +119,10 @@ namespace HairSalonNS
       conn.Open();
 
       SqlCommand cmd = new SqlCommand("SELECT * FROM stylists WHERE id = @StylistId;", conn);
-      SqlParameter categoryIdParameter = new SqlParameter();
-      categoryIdParameter.ParameterName = "@StylistId";
-      categoryIdParameter.Value = id.ToString();
-      cmd.Parameters.Add(categoryIdParameter);
+      SqlParameter stylistIdParameter = new SqlParameter();
+      stylistIdParameter.ParameterName = "@StylistId";
+      stylistIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(stylistIdParameter);
       rdr = cmd.ExecuteReader();
 
       int foundStylistId = 0;
@@ -153,10 +153,10 @@ namespace HairSalonNS
       conn.Open();
 
       SqlCommand cmd = new SqlCommand("SELECT * FROM clients WHERE stylist_id = @StylistId;", conn);
-      SqlParameter categoryIdParameter = new SqlParameter();
-      categoryIdParameter.ParameterName = "@StylistId";
-      categoryIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(categoryIdParameter);
+      SqlParameter stylistIdParameter = new SqlParameter();
+      stylistIdParameter.ParameterName = "@StylistId";
+      stylistIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(stylistIdParameter);
       rdr = cmd.ExecuteReader();
 
       List<Client> clients = new List<Client> {};
@@ -192,10 +192,10 @@ namespace HairSalonNS
       newNameParameter.Value = newName;
       cmd.Parameters.Add(newNameParameter);
 
-      SqlParameter categoryIdParameter = new SqlParameter();
-      categoryIdParameter.ParameterName = "@StylistId";
-      categoryIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(categoryIdParameter);
+      SqlParameter stylistIdParameter = new SqlParameter();
+      stylistIdParameter.ParameterName = "@StylistId";
+      stylistIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(stylistIdParameter);
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -221,11 +221,11 @@ namespace HairSalonNS
 
       SqlCommand cmd = new SqlCommand("DELETE FROM stylists WHERE id = @StylistId; DELETE FROM clients WHERE stylist_id = @StylistId;", conn);
 
-      SqlParameter categoryIdParameter = new SqlParameter();
-      categoryIdParameter.ParameterName = "@StylistId";
-      categoryIdParameter.Value = this.GetId();
+      SqlParameter stylistIdParameter = new SqlParameter();
+      stylistIdParameter.ParameterName = "@StylistId";
+      stylistIdParameter.Value = this.GetId();
 
-      cmd.Parameters.Add(categoryIdParameter);
+      cmd.Parameters.Add(stylistIdParameter);
       cmd.ExecuteNonQuery();
 
       if (conn != null)
