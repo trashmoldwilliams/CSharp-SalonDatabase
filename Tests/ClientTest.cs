@@ -89,13 +89,12 @@ namespace HairSalonNS
       Client testClient = new Client(name, stylistId);
       testClient.Save();
       string newName = "Barry";
-      int newStylistId = 2;
 
       //Act
       testClient.Update(newName);
 
-      Client result = new Client(testClient.GetName(), 1);
-      Client newClient = new Client(newName, 1);
+      Client result = new Client(testClient.GetName(), stylistId);
+      Client newClient = new Client(newName, stylistId);
 
       //Assert
       Assert.Equal(newClient, result);
