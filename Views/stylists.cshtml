@@ -6,10 +6,9 @@
 <ul>
   @foreach (var stylist in @Model)
   {
-    <li><a href="/stylists/@stylist.GetId()">@stylist.GetName()</a></li>
+    <li><a href="/stylists/@stylist.GetId()">@stylist.GetName()</a> | <a href="/stylist/edit/@stylist.GetId()">Edit</a></li></li>
   }
 </ul>
-<br>
 <p><a href="/">Return Home</a></p>
 
 <hr />
