@@ -1,0 +1,34 @@
+<h2>@Model["stylist"].GetName()'s Clients</h2>
+
+@if (@Model["clients"].Count == 0)
+{
+  <p>No clients have been added yet!</p>
+}
+else
+{
+  <ol>
+    @foreach (var client in @Model["clients"])
+    {
+      <li>@client.GetName()</li>
+    }
+  </ol>
+}
+
+<br>
+<p><a href="/stylists">Return to Stylists</a></p>
+<hr />
+<h3>Add a new stylist</h3>
+<form action='/stylists/@Model["stylist"].GetId()/new' method="post">
+  <label for="name">Name:</label>
+  <input id="name" name="name" type="text">
+  <br>
+  <label for="stylist-id">Stylist:</label>
+  <select name="stylist-id">
+    @foreach (var stylist in @Model["stylists"])
+    {
+      <option value="@stylist.GetId()">@stylist.GetName()</option>
+    }
+  </select>
+  <br>
+  <button type="submit">Add new client</button>
+</form>
