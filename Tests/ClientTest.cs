@@ -83,6 +83,7 @@ namespace HairSalonNS
     public void Dispose()
     {
       Client.DeleteAll();
+      Stylist.DeleteAll();
     }
 
   }
