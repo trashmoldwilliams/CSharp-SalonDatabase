@@ -6,7 +6,14 @@
 <ul>
   @foreach (var stylist in @Model)
   {
-    <li><a href="/stylists/@stylist.GetId()">@stylist.GetName()</a> | <a href="/stylist/edit/@stylist.GetId()">Edit</a></li></li>
+    <li>
+      <a href="/stylists/@stylist.GetId()">@stylist.GetName()</a> |
+      <a href="/stylist/edit/@stylist.GetId()">Edit</a>
+      <form action="/stylist/delete/@stylist.GetId()" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </li>
   }
 </ul>
 <p><a href="/">Return Home</a></p>
