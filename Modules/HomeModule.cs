@@ -76,6 +76,20 @@ namespace HairSalonNS
         List<Stylist> AllStylists = Stylist.GetAll();
         return View["stylists.cshtml", AllStylists];
       };
+
+      Delete["/client/delete/{id}"] = parameters => {
+        Client SelectedClient = Client.Find(parameters.id);
+        SelectedClient.Delete();
+
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        Stylist SelectedStylist = Stylist.Find(SelectedClient.GetStylistId());
+        List<Client> StylistClient = SelectedStylist.GetClients();
+        List<Stylist> AllStylists = Stylist.GetAll();
+        model.Add("stylist", SelectedStylist);
+        model.Add("clients", StylistClient);
+        model.Add("stylists", AllStylists);
+        return View["clients.cshtml", model];
+      };
     }
   }
 }
