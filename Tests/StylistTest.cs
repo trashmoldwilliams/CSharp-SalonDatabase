@@ -151,6 +151,5 @@ namespace HairSalonNS
       Client.DeleteAll();
       Stylist.DeleteAll();
     }
-
   }
 }

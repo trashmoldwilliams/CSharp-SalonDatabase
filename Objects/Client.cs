@@ -140,10 +140,10 @@ namespace HairSalonNS
       conn.Open();
 
       SqlCommand cmd = new SqlCommand("SELECT * FROM clients WHERE id = @ClientId;", conn);
-      SqlParameter categoryIdParameter = new SqlParameter();
-      categoryIdParameter.ParameterName = "@ClientId";
-      categoryIdParameter.Value = id.ToString();
-      cmd.Parameters.Add(categoryIdParameter);
+      SqlParameter clientIdParameter = new SqlParameter();
+      clientIdParameter.ParameterName = "@ClientId";
+      clientIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(clientIdParameter);
       rdr = cmd.ExecuteReader();
 
       int foundClientId = 0;
@@ -167,6 +167,26 @@ namespace HairSalonNS
         conn.Close();
       }
       return foundClient;
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM clients WHERE id = @ClientId;", conn);
+
+      SqlParameter clientIdParameter = new SqlParameter();
+      clientIdParameter.ParameterName = "@ClientId";
+      clientIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(clientIdParameter);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
   }
 }

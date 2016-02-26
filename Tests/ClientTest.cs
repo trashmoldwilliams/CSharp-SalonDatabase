@@ -80,6 +80,28 @@ namespace HairSalonNS
       Assert.Equal(testClient, foundClient);
     }
 
+    [Fact]
+    public void Test_Delete_DeletesClientFromDatabase()
+    {
+      //Arrange
+      string name1 = "Larry";
+      Stylist testStylist1 = new Stylist(name1);
+      testStylist1.Save();
+
+      Client testClient1 = new Client("Jerry", testStylist1.GetId());
+      testClient1.Save();
+      Client testClient2 = new Client("Perry", testStylist1.GetId());
+      testClient2.Save();
+
+      //Act
+      testClient1.Delete();
+      List<Client> resultClients = testStylist1.GetClients();
+      List<Client> testClientList = new List<Client> {testClient2};
+
+      //Assert
+      Assert.Equal(testClientList, resultClients);
+    }
+
     public void Dispose()
     {
       Client.DeleteAll();
