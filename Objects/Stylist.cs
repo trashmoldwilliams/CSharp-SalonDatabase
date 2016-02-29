@@ -146,39 +146,6 @@ namespace HairSalonNS
       return foundStylist;
     }
 
-    public List<Client> GetClients()
-    {
-      SqlConnection conn = DB.Connection();
-      SqlDataReader rdr = null;
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("SELECT * FROM clients WHERE stylist_id = @StylistId;", conn);
-      SqlParameter stylistIdParameter = new SqlParameter();
-      stylistIdParameter.ParameterName = "@StylistId";
-      stylistIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(stylistIdParameter);
-      rdr = cmd.ExecuteReader();
-
-      List<Client> clients = new List<Client> {};
-      while(rdr.Read())
-      {
-        int clientId = rdr.GetInt32(0);
-        string clientName = rdr.GetString(1);
-        int clientStylistId = rdr.GetInt32(2);
-        Client newClient = new Client(clientName, clientStylistId, clientId);
-        clients.Add(newClient);
-      }
-      if (rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
-      return clients;
-    }
-
     public void Update(string newName)
     {
       SqlConnection conn = DB.Connection();
@@ -214,12 +181,94 @@ namespace HairSalonNS
       }
     }
 
+    public void AddClient(Client newClient)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO stylists_clients (stylist_id, client_id) VALUES (@StylistId, @ClientId)", conn);
+
+      SqlParameter stylistIdParameter = new SqlParameter();
+      stylistIdParameter.ParameterName = "@StylistId";
+      stylistIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(stylistIdParameter);
+
+      SqlParameter clientIdParameter = new SqlParameter();
+      clientIdParameter.ParameterName = "@ClientId";
+      clientIdParameter.Value = newClient.GetId();
+      cmd.Parameters.Add(clientIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public List<Client> GetClients()
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT client_id FROM stylists_clients WHERE stylist_id = @StylistId;", conn);
+      SqlParameter stylistIdParameter = new SqlParameter();
+      stylistIdParameter.ParameterName = "@StylistId";
+      stylistIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(stylistIdParameter);
+
+      rdr = cmd.ExecuteReader();
+
+      List<int> clientIds = new List<int> {};
+      while(rdr.Read())
+      {
+        int clientId = rdr.GetInt32(0);
+        clientIds.Add(clientId);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      List<Client> clients = new List<Client> {};
+      foreach (int clientId in clientIds)
+      {
+        SqlDataReader queryReader = null;
+        SqlCommand clientQuery = new SqlCommand("SELECT * FROM clients WHERE id = @ClientId;", conn);
+
+        SqlParameter clientIdParameter = new SqlParameter();
+        clientIdParameter.ParameterName = "@ClientId";
+        clientIdParameter.Value = clientId;
+        clientQuery.Parameters.Add(clientIdParameter);
+
+        queryReader = clientQuery.ExecuteReader();
+        while(queryReader.Read())
+        {
+              int thisClientId = queryReader.GetInt32(0);
+              string clientDescription = queryReader.GetString(1);
+              Client foundClient = new Client(clientDescription, thisClientId);
+              clients.Add(foundClient);
+        }
+        if (queryReader != null)
+        {
+          queryReader.Close();
+        }
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return clients;
+    }
+
+
     public void Delete()
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM stylists WHERE id = @StylistId; DELETE FROM clients WHERE stylist_id = @StylistId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM stylists WHERE id = @StylistId; DELETE FROM stylists_clients WHERE stylist_id = @StylistId;", conn);
 
       SqlParameter stylistIdParameter = new SqlParameter();
       stylistIdParameter.ParameterName = "@StylistId";
